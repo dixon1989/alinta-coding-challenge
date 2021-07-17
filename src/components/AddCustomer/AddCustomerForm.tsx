@@ -1,10 +1,12 @@
 import { Field, Formik, FormikHelpers } from "formik";
 import * as React from "react";
 import { ICustomer, Customer } from "../../types/types";
+import { validateFirstName, validateLastName, validateDateOfBirth, validatePhone } from "../../validation/AddCustomer";
 import {
   StyledForm,
   StyledInput,
   StyledLabel,
+  StyledError,
   StyledAddButton,
   StyledAccordionContainer,
 } from "./StyledAddCustomerForm";
@@ -23,7 +25,7 @@ export const AddCustomerForm: React.FC<Props> = ({ saveCustomer }) => {
         firstName: "",
         lastName: "",
         phoneNumber: "",
-        dateOfBirth: ""
+        dateOfBirth: "",
       }}
       onSubmit={(
         values: Customer,
@@ -33,54 +35,76 @@ export const AddCustomerForm: React.FC<Props> = ({ saveCustomer }) => {
         setSubmitting(false);
       }}
     >
-      <>
-        <StyledAccordionContainer>
-          <h3>Show Add Customer Form</h3>
-          <button onClick={() => setHidden(!hidden)}>
-            {hidden ? "Show" : "Hide"}
-          </button>
-        </StyledAccordionContainer>
-        <StyledForm hidden={hidden}>
-          <StyledLabel aria-label="First Name" htmlFor="firstName">First Name</StyledLabel>
-          <Field
-            as={StyledInput}
-            id="firstName"
-            name="firstName"
-            placeholder="John"
-            aria-label="John"
-          />
-
-          <StyledLabel aria-label="Last Name" htmlFor="lastName">Last Name</StyledLabel>
-          <Field
-            as={StyledInput}
-            id="lastName"
-            name="lastName"
-            placeholder="Doe"
-            aria-label="Doe"
-          />
-
-          <StyledLabel aria-label="Phone Number" htmlFor="phoneNumber">Phone Number</StyledLabel>
-          <Field
-            as={StyledInput}
-            id="phoneNumber"
-            name="phoneNumber"
-            placeholder="john@acme.com"
-            aria-label="john@acme.com"
-            type="tel"
-          />
-
-          <StyledLabel aria-label="Date of Birth" htmlFor="dateOfBirth">Date of Birth</StyledLabel>
-          <Field
-            as={StyledInput}
-            id="dateOfBirth"
-            name="dateOfBirth"
-            aria-label="date of birth"
-            type="date"
-          />
-
-          <StyledAddButton type="submit">Add Customer</StyledAddButton>
-        </StyledForm>
-      </>
+      {({ errors, touched }) => (
+        <>
+          <StyledAccordionContainer>
+            <h3>Show Add Customer Form</h3>
+            <button onClick={() => setHidden(!hidden)}>
+              {hidden ? "Show" : "Hide"}
+            </button>
+          </StyledAccordionContainer>
+          <StyledForm hidden={hidden}>
+            <StyledLabel aria-label="First Name" htmlFor="firstName">
+              First Name
+            </StyledLabel>
+            <Field
+              as={StyledInput}
+              id="firstName"
+              name="firstName"
+              placeholder="John"
+              aria-label="John"
+              validate={validateFirstName}
+            />
+            {errors.firstName && touched.firstName && (
+              <StyledError>{errors.firstName}</StyledError>
+            )}
+            <StyledLabel aria-label="Last Name" htmlFor="lastName">
+              Last Name
+            </StyledLabel>
+            <Field
+              as={StyledInput}
+              id="lastName"
+              name="lastName"
+              placeholder="Doe"
+              aria-label="Doe"
+              validate={validateLastName}
+            />
+            {errors.lastName && touched.lastName && (
+              <StyledError>{errors.lastName}</StyledError>
+            )}
+            <StyledLabel aria-label="Phone Number" htmlFor="phoneNumber">
+              Phone Number
+            </StyledLabel>
+            <Field
+              as={StyledInput}
+              id="phoneNumber"
+              name="phoneNumber"
+              placeholder="0412345678"
+              aria-label="0412345678"
+              type="tel"
+              validate={validatePhone}
+            />
+            {errors.phoneNumber && touched.phoneNumber && (
+              <StyledError>{errors.phoneNumber}</StyledError>
+            )}
+            <StyledLabel aria-label="Date of Birth" htmlFor="dateOfBirth">
+              Date of Birth
+            </StyledLabel>
+            <Field
+              as={StyledInput}
+              id="dateOfBirth"
+              name="dateOfBirth"
+              aria-label="date of birth"
+              type="date"
+              validate={validateDateOfBirth}
+            />
+            {errors.dateOfBirth && touched.dateOfBirth && (
+              <StyledError>{errors.dateOfBirth}</StyledError>
+            )}
+            <StyledAddButton type="submit">Add Customer</StyledAddButton>
+          </StyledForm>
+        </>
+      )}
     </Formik>
   );
 };

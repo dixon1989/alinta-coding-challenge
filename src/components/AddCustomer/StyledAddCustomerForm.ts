@@ -62,3 +62,8 @@ export const StyledAccordionContainer = styled.div`
     font-size: 1rem;
   }
 `;
+
+export const StyledError = styled.p`
+  color: red;
+  margin: auto 0 auto auto;
+`;
