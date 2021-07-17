@@ -22,6 +22,8 @@ export const Customer: React.FC<Props> = ({ customer, removeCustomer }) => {
     [dispatch, removeCustomer]
   );
 
+  const date = new Date(customer.dateOfBirth)
+
   return (
     <StyledCustomer>
       <StyledCustomerName>
@@ -29,6 +31,9 @@ export const Customer: React.FC<Props> = ({ customer, removeCustomer }) => {
       </StyledCustomerName>
       <StyledCustomerInfo>
         Phone number: {customer.phoneNumber}
+      </StyledCustomerInfo>
+      <StyledCustomerInfo>
+        Date of Birth: {date.getDate() + " / " + (date.getMonth() + 1) + " / " + date.getFullYear() }
       </StyledCustomerInfo>
       <StyledCustomerDelete onClick={() => deleteCustomer(customer)}>
         Delete
