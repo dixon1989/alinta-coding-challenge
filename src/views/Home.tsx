@@ -7,6 +7,8 @@ import { Dispatch } from "redux";
 import { CustomerState, ICustomer } from "../types/types";
 import { addCustomer, removeCustomer } from "../redux/actions/customerActions";
 import { filteredLaunches } from "../validation/SearchCustomer";
+import { StyledCustomerTable, StyledTableContainer } from "../StyledApp";
+import { useSortableData } from "../validation/FilterCustomer";
 
 const Home: React.FC = () => {
   const customers: ICustomer[] = useSelector(
@@ -23,6 +25,14 @@ const Home: React.FC = () => {
 
   const [searchValue, setSearchValue] = React.useState<string>("");
   const [newCustomer, setNewCustomer] = React.useState<ICustomer[]>(customers);
+
+  const { items, requestSort, sortConfig } = useSortableData(newCustomer, null);
+  const getClassNamesFor = (name: string) => {
+    if (!sortConfig) {
+      return;
+    }
+    return sortConfig.key === name ? sortConfig.direction : undefined;
+  };
 
   React.useEffect(() => {
     setNewCustomer(customers);
@@ -42,6 +52,8 @@ const Home: React.FC = () => {
     setNewCustomer(searchFilter);
   };
 
+  let sortFilter = items ? items : newCustomer
+
   return (
     <>
       <AddCustomerForm customers={newCustomer} saveCustomer={saveCustomer} />
@@ -49,13 +61,59 @@ const Home: React.FC = () => {
         update={(e: React.ChangeEvent<HTMLInputElement>) => handleChange(e)}
         value={searchValue}
       />
-      {newCustomer.map((customer: ICustomer) => (
-        <Customer
-          key={customer.id}
-          customer={customer}
-          removeCustomer={removeCustomer}
-        />
-      ))}
+      <StyledTableContainer>
+        <StyledCustomerTable>
+          <thead>
+            <tr>
+              <th>
+                <button
+                  type="button"
+                  onClick={() => requestSort("firstName")}
+                  className={getClassNamesFor("firstName")}
+                >
+                  First Name
+                </button>
+              </th>
+              <th>
+                <button
+                  type="button"
+                  onClick={() => requestSort("lastName")}
+                  className={getClassNamesFor("lastName")}
+                >
+                  Last Name
+                </button>
+              </th>
+              <th>
+                <button
+                  type="button"
+                  onClick={() => requestSort("phoneNumber")}
+                  className={getClassNamesFor("phoneNumber")}
+                >
+                  Phone Number
+                </button>
+              </th>
+              <th>
+                <button
+                  type="button"
+                  onClick={() => requestSort("dateOfBirth")}
+                  className={getClassNamesFor("dateOfBirth")}
+                >
+                  Date of Birth
+                </button>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {sortFilter.map((customer: ICustomer) => (
+              <Customer
+                key={customer.id}
+                customer={customer}
+                removeCustomer={removeCustomer}
+              />
+            ))}
+          </tbody>
+        </StyledCustomerTable>
+      </StyledTableContainer>
     </>
   );
 };
