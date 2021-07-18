@@ -1,3 +1,5 @@
+import { ICustomer, Customer } from "../types/types";
+
 export const validateFirstName = (value: string): string | undefined => {
   let error;
   if (value === "") {
@@ -33,5 +35,29 @@ export const validateDateOfBirth = (value: string): string | undefined => {
   if (!value) {
     error = "Select your Date of Birth!";
   }
+  return error;
+};
+
+export const storeDuplicateCheck = (
+  values: Customer,
+  customers: ICustomer[]
+) => {
+  const valueName = values.firstName + " " + values.lastName;
+  const valuePhoneNumber = values.phoneNumber.replace(/[^0-9.]+/g, "");
+  let error = "";
+  customers.forEach((item: ICustomer) => {
+    let name = item.firstName + " " + item.lastName;
+    let phoneNumber = item.phoneNumber.replace(/[^0-9.]+/g, "");
+
+    if (name === valueName) {
+      error = "Customer cannot have the same name";
+      return;
+    }
+
+    if (phoneNumber === valuePhoneNumber) {
+      error = "Customer cannot have the same Phone Number";
+      return;
+    }
+  });
   return error;
 };

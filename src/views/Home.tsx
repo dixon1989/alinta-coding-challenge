@@ -7,7 +7,7 @@ import { CustomerState, ICustomer } from "../types/types";
 import { addCustomer, removeCustomer } from "../redux/actions/customerActions";
 
 const Home: React.FC = () => {
-  const customers: readonly ICustomer[] = useSelector(
+  const customers: ICustomer[] = useSelector(
     (state: CustomerState) => state.customers,
     shallowEqual
   );
@@ -21,7 +21,7 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <AddCustomerForm saveCustomer={saveCustomer} />
+      <AddCustomerForm customers={customers} saveCustomer={saveCustomer} />
       {customers.map((customer: ICustomer) => (
         <Customer
           key={customer.id}

@@ -1,7 +1,13 @@
 import { Field, Formik, FormikHelpers } from "formik";
 import * as React from "react";
 import { ICustomer, Customer } from "../../types/types";
-import { validateFirstName, validateLastName, validateDateOfBirth, validatePhone } from "../../validation/AddCustomer";
+import {
+  validateFirstName,
+  validateLastName,
+  validateDateOfBirth,
+  validatePhone,
+  storeDuplicateCheck,
+} from "../../validation/AddCustomer";
 import {
   StyledForm,
   StyledInput,
@@ -12,12 +18,17 @@ import {
 } from "./StyledAddCustomerForm";
 
 type Props = {
+  customers: ICustomer[];
   saveCustomer: (customer: ICustomer | any) => void;
 };
 
-export const AddCustomerForm: React.FC<Props> = ({ saveCustomer }) => {
+export const AddCustomerForm: React.FC<Props> = ({
+  customers,
+  saveCustomer,
+}) => {
   // Move the Add new customer, form it takes up a lot of space on mobile. It could move to another page or be hidden in an accordion.
-  const [hidden, setHidden] = React.useState(true);
+  const [hidden, setHidden] = React.useState<boolean>(true);
+  const [submitError, setSubmitError] = React.useState<string>("");
 
   return (
     <Formik
@@ -31,7 +42,12 @@ export const AddCustomerForm: React.FC<Props> = ({ saveCustomer }) => {
         values: Customer,
         { setSubmitting }: FormikHelpers<Customer>
       ) => {
-        saveCustomer(values);
+        const checkDuplicate = () => storeDuplicateCheck(values, customers);
+        setSubmitError(checkDuplicate());
+        if (!checkDuplicate()) {
+          setSubmitError("");
+          saveCustomer(values);
+        }
         setSubmitting(false);
       }}
     >
@@ -101,6 +117,7 @@ export const AddCustomerForm: React.FC<Props> = ({ saveCustomer }) => {
             {errors.dateOfBirth && touched.dateOfBirth && (
               <StyledError>{errors.dateOfBirth}</StyledError>
             )}
+            {submitError && <StyledError>{submitError}</StyledError>}
             <StyledAddButton type="submit">Add Customer</StyledAddButton>
           </StyledForm>
         </>
