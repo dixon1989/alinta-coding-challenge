@@ -3,6 +3,7 @@ import { useSelector, shallowEqual, useDispatch } from "react-redux";
 import { Customer } from "../components/Customer/Customer";
 import { AddCustomerForm } from "../components/AddCustomer/AddCustomerForm";
 import { SearchCustomer } from "../components/SearchCustomer/SearchCustomer";
+import { TableCustomer } from "../components/TableCustomer/TableCustomer";
 import { Dispatch } from "redux";
 import { CustomerState, ICustomer } from "../types/types";
 import { addCustomer, removeCustomer } from "../redux/actions/customerActions";
@@ -52,7 +53,7 @@ const Home: React.FC = () => {
     setNewCustomer(searchFilter);
   };
 
-  let sortFilter = items ? items : newCustomer
+  let sortFilter = items ? items : newCustomer;
 
   return (
     <>
@@ -63,46 +64,10 @@ const Home: React.FC = () => {
       />
       <StyledTableContainer>
         <StyledCustomerTable>
-          <thead>
-            <tr>
-              <th>
-                <button
-                  type="button"
-                  onClick={() => requestSort("firstName")}
-                  className={getClassNamesFor("firstName")}
-                >
-                  First Name
-                </button>
-              </th>
-              <th>
-                <button
-                  type="button"
-                  onClick={() => requestSort("lastName")}
-                  className={getClassNamesFor("lastName")}
-                >
-                  Last Name
-                </button>
-              </th>
-              <th>
-                <button
-                  type="button"
-                  onClick={() => requestSort("phoneNumber")}
-                  className={getClassNamesFor("phoneNumber")}
-                >
-                  Phone Number
-                </button>
-              </th>
-              <th>
-                <button
-                  type="button"
-                  onClick={() => requestSort("dateOfBirth")}
-                  className={getClassNamesFor("dateOfBirth")}
-                >
-                  Date of Birth
-                </button>
-              </th>
-            </tr>
-          </thead>
+          <TableCustomer
+            requestSort={(value: string) => requestSort(value)}
+            getClassNamesFor={(value: string) => getClassNamesFor(value)}
+          />
           <tbody>
             {sortFilter.map((customer: ICustomer) => (
               <Customer
