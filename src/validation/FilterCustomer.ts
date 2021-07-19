@@ -1,6 +1,8 @@
 import React from "react";
 import { ICustomer } from "../types/types";
 
+// function that use to sort table data
+
 export const useSortableData = (items: ICustomer[], config: any) => {
   const [sortConfig, setSortConfig] = React.useState(config);
 

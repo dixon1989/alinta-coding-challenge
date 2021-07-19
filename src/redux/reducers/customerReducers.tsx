@@ -1,6 +1,8 @@
 import { CustomerAction, CustomerState, ICustomer } from "../../types/types";
 import { ADD_CUSTOMER, REMOVE_CUSTOMER } from "../actions/customerTypes";
 
+// Added date of birth value to prevent errors from reducers
+
 export const initialState: CustomerState = {
   customers: [
     {

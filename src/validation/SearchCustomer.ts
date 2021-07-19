@@ -1,5 +1,7 @@
 import { ICustomer } from "../types/types";
 
+// function that use to simplify searches by selected key name
+
 export const filteredLaunches = function (
   customer: ICustomer[],
   search: string,

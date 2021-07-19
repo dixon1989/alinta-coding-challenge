@@ -9,6 +9,8 @@ import {
   // StyledCustomerName,
 } from "./StyledCustomer";
 
+// Converting to table view
+
 type Props = {
   customer: ICustomer;
   removeCustomer: (customer: ICustomer) => void;

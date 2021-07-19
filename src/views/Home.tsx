@@ -40,9 +40,9 @@ const Home: React.FC = () => {
   }, [customers]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // Get event value
+
     let searchValue = event.target.value;
-    // Set the state to trigger a re-rendering
+
     setSearchValue(searchValue);
     let searchFilter = filteredLaunches(customers, searchValue, [
       "firstName",
